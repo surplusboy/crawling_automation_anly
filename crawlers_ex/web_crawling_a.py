@@ -8,6 +8,7 @@ from urllib import request as url_request
 # 2. beautifulSoup 을 통해 HTML 문서 파싱
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'}
 url = 'https://finance.naver.com/item/sise.naver?code=005930'
+
 # url = 'https://www.dcinside.com/'
 
 data = requests.get(url, headers=headers)
