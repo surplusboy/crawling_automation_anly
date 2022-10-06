@@ -65,6 +65,8 @@ try:
 except Exception as e:
     print(e)
 
+
+
 # urllib.request.urlretrieve(img, '파일명')
 
 input('press any key to quit')
