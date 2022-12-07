@@ -25,8 +25,8 @@ def request_winning(round:int) -> post:
 def total_winnings(result:object) -> tuple:
     soup = BeautifulSoup(result, 'html.parser')
     round_num = soup.select_one('.win_result>h4>strong')
-    ratio = soup.select_one('.list_text_common>li>strong')
-    ratio = int(re.sub(r'[^0-9]', '', ratio.text))
+    ratio_1 = soup.select_one('.list_text_common>li>strong')
+    ratio_2 = int(re.sub(r'[^0-9]', '', ratio_1.text))
 
     result = soup.select('tbody>tr')
     total = int()
@@ -35,13 +35,31 @@ def total_winnings(result:object) -> tuple:
     for i in range(len(result)):
         a = int(re.sub(r'[^0-9]', '', result[i].select('td')[1].text))
         total += a
-    return total, total/ratio
+    return total, total/ratio_2
 
 
-index_num = int(input('기준 회차부터 200회차까지 조회'))
+def search(start_num:int):
+    flag = False
+    if start_num - 200 <= 0:
+        last_num = start_num - 200 - (start_num - 200)
+        flag = True
+    else:
+        last_num = start_num - 200
 
-for i in range(index_num, index_num-200, -1):
-    result_1, result_2 = request_winning(i)
-    sales, ratio = total_winnings(result_2)
-    print('총 당첨 금액 : {}\n비율 : {}'.format(sales, ratio))
-    time.sleep(0.2)
+    # for i in range(start_num, last_num if flag else start_num-200, -1): # 삼항 연산자가 꼭 필요한지 ?
+    for i in range(start_num, last_num, -1):
+        result_1, result_2 = request_winning(i)
+        sales, ratio = total_winnings(result_2)
+        print('총 당첨 금액 : {}\n비율 : {}'.format(sales, ratio))
+        time.sleep(0.1)
+
+
+index_num = int(input('기준 회차 부터 200회 차까지 조회'))
+if not index_num > 0:
+    raise TypeError('index_num must be positive integer')
+search(index_num)
+
+
+# search(int(input('기준 회차 부터 200회 차까지 조회')))
+
+
